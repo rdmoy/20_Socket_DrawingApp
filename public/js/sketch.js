@@ -11,9 +11,11 @@
 var socket = io()
 
 //global vars
-var color;
+var color
+var colors;
 var newLine;
 var eraser;
+var colorArray;
 
 //setup p5
 function setup(){
@@ -21,12 +23,17 @@ function setup(){
 	background(0);
 	strokeCap(ROUND)
 	colorMode(HSB, 360, 100, 100);
-	color = {h: random(0, 360), s: 100, b: 100}
 	eraser = {h: 0, s: 0, b: 0}
-	var newLines = new NewMarker(color, 10)
-	newLine = newLines
-	var erasers = new NewMarker(eraser, 50)
-	eraser = erasers
+	colors = {
+	"color1": {h: random(0, 360), s: 100, b: 100},
+	"color2": {h: random(0, 360), s: 100, b: 100},
+	"color3": {h: random(0, 360), s: 100, b: 100},
+	"color4": {h: random(0, 360), s: 100, b: 100},
+	"color5": {h: random(0, 360), s: 100, b: 100}
+	};
+	color = colors.color1
+	newLine = new NewMarker(color, 10)
+	eraser = new NewMarker(eraser, 50);
 }
 
 //draw p5
@@ -59,7 +66,6 @@ function draw(){
 
 //socket calls
 socket.on("connect",function(){
-	console.log("connecting to server")
 });
 
 socket.on("drawToCanvas", function(lineJSON){
@@ -71,17 +77,13 @@ socket.on("drawToCanvas", function(lineJSON){
 
 var controls = document.querySelector(".controls");
 var buttons = document.querySelectorAll(".controls .button");
+
 controls.onclick = function(event){
-	for (i=0; i<buttons.length; i++){
-		if event.target === buttons[i] color = 
+
+	if (colors[event.target.dataset.butColor] !== undefined) {
+		newLine.color = colors[event.target.dataset.butColor];
 	}
 }
-console.log(buttonArray[0][0])
-
-var colorPicker = function(){
-	
-}
-
 
 
 
